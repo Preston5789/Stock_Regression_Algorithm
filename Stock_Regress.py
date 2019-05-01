@@ -1,12 +1,10 @@
 
 
-'''WELCOME TO OPERATION BLUEBOOK'''
+'''WELCOME TO THE LINEAR REGRESSION TRADING ALGORITHM'''
 '''Put Your Personal Stuff In Here:'''
 
 api_key = ''
 api_secret = ''
-
-
 
 
 tickerlist = ['oaxeth@ticker', 'wtceth@ticker','bateth@ticker', 'ltceth@ticker','trxeth@ticker',
@@ -27,7 +25,7 @@ from matplotlib.widgets import Button
 '''...........This Bool Will Start Moving Money.......'''
 Jesus=0
 '''..................DO NOT TOUCH....................'''
-
+#declare lists and golobal variables
 stop=datetime.datetime.now()
 position =0
 tdyyield=0.0
@@ -57,42 +55,49 @@ totalsell = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 graphswitcheroo = 0
 wrap = False
 
+#Connect the api and get the starting balance of ETH (Our base stock that we trade with)
 client = Client(api_key, api_secret)
 startbalnace=client.get_asset_balance('ETH')
 startbalnace = startbalnace['free']
 
 print(startbalnace)
-
+#Script for buying stock
 def buy():
 
     global decider
+    #We can only buy 10 different stocks at a time
     if(sum(totalsell) < 10.0):
         print('We are looking to buy!!')
-        lssyield[position]=0
 
+        #We compare the errors in the two regression models to determine when to buy or sell
         if((float(bottomerror_list[position][-1]) > float(toperror2_list[position][-1])) & (float(bottomerror2_list[position][-1])>0.0)):
             print('Buying That SHIT!')
+            ##Append the appropriate lists for plotting
             buy_list[position].append(temp_list[position][len(temp_list[position])-1])
             buytime_list[position].append((temptime_list[position][len(temptime_list[position])-1]))
+            #Stores that we are currently trading a stock
             totalsell[position] = 1
+            #We dont want to buy if we hit the sell-all button
             if(wrap == True):
                 decider[position] = True
             else:
+                #Dont buy again
                 decider[position] = False
-            buyvolume=float(startbalnace)/(10.0*float(temp_list[position][len(temp_list[position])-1]))
-            buyvolume=math.trunc(buyvolume)
-            print("We are buying {} Shares of {}".format(buyvolume, tickerlist[position]))
-            tempname=tickerlist[position].split("@")
-            tempname = str(tempname[0]).upper()
+                #Buy 1/10 of starting amount of ETH
+                buyvolume=float(startbalnace)/(10.0*float(temp_list[position][len(temp_list[position])-1]))
+                buyvolume=math.trunc(buyvolume)
+                print("We are buying {} Shares of {}".format(buyvolume, tickerlist[position]))
+                tempname=tickerlist[position].split("@")
+                tempname = str(tempname[0]).upper()
 
-            print(tempname)
-            if(Jesus==1):
-                order = client.create_order(
-                    symbol=tempname,
-                    side=Client.SIDE_BUY,
-                    type=Client.ORDER_TYPE_MARKET,
-                    quantity=buyvolume)
-                print(order)
+                print(tempname)
+                if(Jesus==1):
+                    order = client.create_order(
+                        symbol=tempname,
+                        side=Client.SIDE_BUY,
+                        type=Client.ORDER_TYPE_MARKET,
+                        quantity=buyvolume)
+                    print(order)
     else:
         print('holding')
 
@@ -100,20 +105,24 @@ def buy():
 def sell():
     global decider
     global tdyyield
+    #Calculate current trading yeild for this stock
     lssyield[position]=100*((float(tracker_list[position][-1])-float(buy_list[position][-1]))/(float(buy_list[position][-1]))-0.002)/10
+    #We make sure to account for 0.02% trading fees and to account for slippage
     if( (1.00519*float(buy_list[position][-1]) < float(temp_list[position][-1])) ):
 
         print('We are looking to Sell!!!')
-
+        #We compare the errors in the two regression models to determine when to buy or sell
         if((float(toperror_list[position][-1]) >=  1.0*float(bottomerror2_list[position][-1]))& (float(toperror_list[position][-1]) < 0.0)):
             print('Selling That SHIT!')
+            #Append appropriate lists for plotting
             sell_list[position].append(temp_list[position][-1])
             selltime_list[position].append((temptime_list[position][-1]))
+            #Since we have sold back to ETH, we calculate our total profit
             tdyyield += -100*((float(buy_list[position][-1])-float(sell_list[position][-1]))/float((buy_list[position][-1]))-0.002)/10
             lssyield[position]=0
             totalsell[position] = 0
             decider[position] = True
-
+            #Sell all of the stock we own
             tempname=tickerlist[position].split("@")
             tempname = str(tempname[0]).upper()
             tempvolname = tempname[0:3]
@@ -130,27 +139,28 @@ def sell():
                     quantity=sellvolume)
                 print(order)
 
+#This determines whether to buy or sell after we get a stock price
 def decide():
     if(decider[position] == True):
         buy()
 
     if(decider[position] == False):
         sell()
-
+#Script Controlling what happens to incoming API messages from websocket
 def process_m_message(msg):
 
     if((msg['data']['e'] != 'error')):
 
         global position
-
+        #Gets the name of the ticker coming in
         tickername = str(msg['stream'])
         position = tickerlist.index(tickername)
         '''print("stream: {} data: {}".format(msg['stream'], msg['data']))'''
 
-
+        #temporarily stores the price and server time
         tester = str(msg['data']['c'])
         timer = str(msg['data']['E'])
-
+        #Appendthe appropriate lists for plotting
         tracker_list[position].append(tester)
         trackertime_list[position].append(timer)
         temp_list[position].append(tester)
@@ -159,11 +169,12 @@ def process_m_message(msg):
         temptime2_list[position].append(timer)
 
 
-
+        #Calculating statistics for the past 35 datapoints
         if(len(tracker_list[position]) >= 35):
             print("The stock: {} is currently has a time of: {}".format(tickerlist[position], trackertime_list[position][-1]))
             temptimearray = numpy.asarray(temptime_list[position]).astype(numpy.float)
             temparray = numpy.asarray(temp_list[position]).astype(numpy.float)
+            #normalize data by dividing ove the first pricepoint in dataset, initial price
             temparray /= numpy.float(tracker_list[position][0])
 
 
@@ -175,6 +186,7 @@ def process_m_message(msg):
             intercept = model.intercept
             line = slope*temptimearray + intercept
 
+            #Calculate the standard error in the regression model
             avgx = sum(temptimearray)/len(temptimearray)
             devx = (temptimearray - avgx)**2
             devx = sum(devx)
@@ -185,14 +197,14 @@ def process_m_message(msg):
             error = (error)**(.5)
             error = 4.957*error/devx
 
-
+            ##Append the appropriate lists and delete a couple to keep 35 points
             toperror_list[position].append(error+slope)
             bottomerror_list[position].append(slope-error)
 
             temp_list[position].remove(temp_list[position][0])
             temptime_list[position].remove(temptime_list[position][0])
             line1_list[position] = numpy.delete(line, [0])
-
+        #Do the exact same stuff for the last 95 points
         if(len(tracker_list[position]) >= 95):
             longtimearray2 = numpy.asarray(temptime2_list[position]).astype(numpy.float)
             longarray2 = numpy.asarray(temp2_list[position]).astype(numpy.float)
@@ -227,7 +239,7 @@ def process_m_message(msg):
             temp2_list[position].remove(temp2_list[position][0])
             temptime2_list[position].remove(temptime2_list[position][0])
             decide()
-
+    #We only display the past 120 data points on the graph on the regression values
     if (len(slope_list[position])> 120):
 
             slope_list[position].remove(slope_list[position][0])
@@ -244,7 +256,7 @@ def clock_reset():
     global stop
     stop = (datetime.datetime.now() + datetime.timedelta(seconds=30))
 
-
+#Set up math plots
 plt.ion()
 fig, axs = plt.subplots(4, 1,figsize=(8,10), constrained_layout=True)
 x1, y1 = [],[]
@@ -264,11 +276,9 @@ buydata = axs[0].scatter(buyx, buyy, s = 15, c = 'g')
 livedata = axs[0].scatter(x1,y1,s=s)
 selldata = axs[0].scatter(sellx, selly, s = 15, c = 'r')
 buydata = axs[0].scatter(buyx, buyy, s = 15, c = 'g')
-
 axs[0].set_title('Live Data')
 axs[1].set_title('Linear Regression Analysis')
 axs[1].set_ylabel('Slope Value')
-
 axs[0].set_ylabel('Price Over Time')
 axs[0].set_xlabel('time (s)')
 axs[1].set_xlabel('time (s)')
@@ -299,6 +309,7 @@ yield_text = fig.text(0.5, 0.37, '', multialignment="left")
 lossyield_text = fig.text(0.5, 0.34, '', multialignment="left")
 totalsell_text = fig.text(0.5, 0.31, '', multialignment="left")
 
+#Get the websocket up and running
 print('Starting Websocket')
 bm = BinanceSocketManager(client, user_timeout=20)
 conn_key = bm.start_multiplex_socket(tickerlist, process_m_message)
@@ -307,13 +318,14 @@ bm.start()
 def on_click(event):
        print('doubleclick')
 
-
+#definition to cycle through graphs
 def _yes(event):
     global graphswitcheroo
     graphswitcheroo += 1
     if(graphswitcheroo>=len(tickerlist)):
         graphswitcheroo = 0
 
+#definition to sell all stocks
 def _closeshop(event):
     global wrap
     print('Wrapping It All Up!!!')
@@ -340,6 +352,7 @@ def _closeshop(event):
                 print(order)
                 totalsell[i] = 0;
 
+#Renders the graph for all of the trading data
 def _rendergraph(event):
     print('Generating Graph')
     axs[3].clear()
@@ -354,7 +367,7 @@ def _rendergraph(event):
     axs[3].scatter(sellx, selly,c='red', linewidths=2.0,edgecolors='black',s=60)
     axs[3].scatter(buyx,buyy,c='green',linewidths=2.0,edgecolors='black',s=60)
 
-
+#Everything to get the buttons together
 plt.connect('button_press_event', on_click)
 nexcut = plt.axes([0.15, 0.40, .17, .05], facecolor='k')
 graphcut = plt.axes([0.15, 0.32, .3,.06], facecolor = 'k')
@@ -368,7 +381,7 @@ bwrapcut.on_clicked(_closeshop)
 
 
 while(True):
-
+    #We are going to restart every so often
     if datetime.datetime.now() > stop:
         print('closing socket')
         bm.close()
@@ -384,6 +397,8 @@ while(True):
     sellx =[float(i) for i in selltime_list[graphswitcheroo]]
     selly =[float(i) for i in sell_list[graphswitcheroo]]
 
+
+    ##Make sure the graphs are all tidy like
     if((len(y1)>0)):
         axs[0].set_ylim(0.98*float(min(y1)) ,1.02*float(max(y1)))
         time_text.set_text('Current Price:  ' + temp_list[graphswitcheroo][0].rstrip('0'))
