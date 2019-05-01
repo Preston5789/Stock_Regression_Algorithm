@@ -4,11 +4,9 @@ This is an script that determines when to buy or sell stocks based off of linear
 
 The script is currently built to handle 15 stocks, but can easily modified for 100+.
 
-## Getting Started
+## The Code
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
-### Prerequisites
+### Installing
 
 What things you need to install the software and how to install them
 
