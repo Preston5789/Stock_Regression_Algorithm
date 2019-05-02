@@ -23,6 +23,13 @@ tickerlist = ['bnbeth@ticker', 'neoeth@ticker','bateth@ticker', 'xlmeth@ticker',
               'knceth@ticker', 'rlceth@ticker','rcneth@ticker', 'evxeth@ticker','icxeth@ticker']
 ```
 ### Navigating The App
+
+Click the "Next Stock Button" to navigate between stocks
+
+Click the "Generate Graph" button to graph all historical data for selected stock
+
+Click the "Wrap it Up" button to sell all traded stocks bath to ETH
+
 <p align="center">
   <img src="https://github.com/Preston5789/Stock_Regression_Algorithm/blob/master/Pics/Sample1.PNG" width="600" title="hover text">
 </p>
