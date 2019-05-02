@@ -42,6 +42,11 @@ Standard errors for regression are measures of how spread out your y variables a
   <img src="https://github.com/Preston5789/Stock_Regression_Algorithm/blob/master/Pics/StandardError.png" width="250" title="hover text">
 </p>
 
+In the script, two slopes are determined. One for the last 35 data points and the other for the next 95 data points after that. The slope and assoiciated error for each time period are plotted against the server time. A sample graph is seen below: 
+
+<p align="center">
+  <img src="https://github.com/Preston5789/Stock_Regression_Algorithm/blob/master/Pics/Sample1.PNG" width="600" title="hover text">
+</p>
 
 
 ## Built With
