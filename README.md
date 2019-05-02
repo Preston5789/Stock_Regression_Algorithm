@@ -34,6 +34,10 @@ Click the "Wrap it Up" button to sell all traded stocks bath to ETH
   <img src="https://github.com/Preston5789/Stock_Regression_Algorithm/blob/master/Pics/Sample1.PNG" width="600" title="hover text">
 </p>
 
+### Going From Simulation to Actual Selling
+
+
+
 ## The Math
 Standard errors for regression are measures of how spread out your y variables are around the mean, μ.The standard error of the regression slope, s (also called the standard error of estimate) represents the average distance that your observed values deviate from the regression line. The smaller the “s” value, the closer your values are to the regression line.
 
