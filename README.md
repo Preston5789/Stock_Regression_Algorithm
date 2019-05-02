@@ -1,6 +1,6 @@
 # Linear Regression Stock Trader
 
-This is an script that determines when to buy or sell stocks based off of linear regression statistics. 
+This is an script that determines when to buy or sell stocks based off of linear regression statistics. This script detects changes in the rate of change of the price. 
 
 The script is currently built to handle 15 stocks, but can easily modified for 100+.
 
