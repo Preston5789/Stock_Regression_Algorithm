@@ -31,7 +31,7 @@ Click the "Generate Graph" button to graph all historical data for selected stoc
 Click the "Wrap it Up" button to sell all traded stocks bath to ETH
 
 <p align="center">
-  <img src="https://github.com/Preston5789/Stock_Regression_Algorithm/blob/master/Pics/Sample1.PNG" width="600" title="hover text">
+  <img src="https://github.com/Preston5789/Stock_Regression_Algorithm/blob/master/Pics/Sample1.PNG" width="900" title="hover text">
 </p>
 
 ### Going From Simulation to Actual Selling
