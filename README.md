@@ -72,7 +72,7 @@ Next, the
       error = sum(error)/33
       error = (error)**(.5)
       error = 4.957*error/devx
-```      
+````      
 
 
 
