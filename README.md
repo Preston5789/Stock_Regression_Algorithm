@@ -48,21 +48,20 @@ In the script, two slopes are determined. One for the last 35 data points and th
   <img src="https://github.com/Preston5789/Stock_Regression_Algorithm/blob/master/Pics/Sample2.PNG" width="600" title="hover text">
 </p>
 
-The calculation for the last 35 data points is shown below:
+The calculation for the last 35 data points is shown below. The lists are converted to numpy arrays so that they can be passed through the linregress function. The slope and intercept are calculated. 
 ```
 if(len(tracker_list[position]) >= 35):
       temptimearray = numpy.asarray(temptime_list[position]).astype(numpy.float)
       temparray = numpy.asarray(temp_list[position]).astype(numpy.float)
-      temparray /= numpy.float(tracker_list[position][0])
- 
-      print(tracker_list[position][0])
       model = linregress(temptimearray,temparray)
       slope = model.slope
       slope_list[position].append(slope)
       slopetime_list[position].append(timer)
- 
       intercept = model.intercept
       line = slope*temptimearray + intercept
+````
+Next, the 
+````
  
       avgx = sum(temptimearray)/len(temptimearray)
       devx = (temptimearray - avgx)**2
