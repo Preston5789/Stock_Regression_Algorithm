@@ -8,10 +8,19 @@ The script is currently built to handle 15 stocks, but can easily modified for 1
 
 ### Installing
 
-What things you need to install the software and how to install them
+Download the zip and open Stock_Regress.py in Pycharm or equivalent. Make sure to have python-binance API package. 
 
+Place person Binance info below:
 ```
-Give examples
+api_key = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+api_secret = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+```
+
+Choose which stocks you want to monitor for trade activity
+```
+tickerlist = ['bnbeth@ticker', 'neoeth@ticker','bateth@ticker', 'xlmeth@ticker','zrpeth@ticker',
+              'zrxeth@ticker', 'adaeth@ticker','kmdeth@ticker', 'naveth@ticker','enjeth@ticker',
+              'knceth@ticker', 'rlceth@ticker','rcneth@ticker', 'evxeth@ticker','icxeth@ticker']
 ```
 
 ### Installing
