@@ -23,33 +23,21 @@ tickerlist = ['bnbeth@ticker', 'neoeth@ticker','bateth@ticker', 'xlmeth@ticker',
               'knceth@ticker', 'rlceth@ticker','rcneth@ticker', 'evxeth@ticker','icxeth@ticker']
 ```
 
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-
 
 ## Built With
 
+* [Python-Binance](https://github.com/sammchardy/python-binance) - API for stock price websocket, buying, and selling
 * [Numpy](https://www.numpy.org/) - scientific computing with Python
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [Scipy](https://www.scipy.org/) - used for linear regression calculations
 
 
 ## Authors
 
 * **Preston Phillips** - [Preston5789](https://github.com/Preston5789)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-n
+
