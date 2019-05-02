@@ -41,6 +41,7 @@ Standard errors for regression are measures of how spread out your y variables a
 <p align="center">
   <img src="https://github.com/Preston5789/Stock_Regression_Algorithm/blob/master/Pics/StandardError.png" width="250" title="hover text">
 </p>
+(https://www.statisticshowto.datasciencecentral.com/find-standard-error-regression-slope/)
 
 In the script, two slopes are determined. One for the last 35 data points and the other for the next 95 data points after that. The slope and assoiciated error for each time period are plotted against the server time. A sample graph is seen below: 
 
@@ -60,17 +61,12 @@ if(len(tracker_list[position]) >= 35):
       intercept = model.intercept
       line = slope*temptimearray + intercept
 ````
-Next, the 
+
+Next, the 99.9% confidence interval is determined 
 ````
- 
       avgx = sum(temptimearray)/len(temptimearray)
-      devx = (temptimearray - avgx)**2
-      devx = sum(devx)
-      devx = (devx)**0.5
- 
-      error = (temparray - line)**2
-      error = sum(error)/33
-      error = (error)**(.5)
+      devx = sum((temptimearray - avgx)**2)**0.5
+      error = (sum((temparray - line)**2)/33)**0.5
       error = 4.957*error/devx
 ````      
 
