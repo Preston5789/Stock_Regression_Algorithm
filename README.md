@@ -8,7 +8,16 @@ The script is currently built to handle 15 stocks, but can easily modified for 1
 
 ### Installing
 
-Download the zip and open Stock_Regress.py in Pycharm or equivalent. Make sure to have python-binance API package. 
+Download the zip and open Stock_Regress.py in your prefered IDE. Make sure to have python-binance API package. 
+
+The program is divided into 4 scripts:
+stock_connect: connects to RestAPI web socket and stores stock data
+stock_plots: generates the ggplot graphs and UI interface to change stocks
+stock_trade: contains the buying and selling scripts
+stock_reg: performs the regression and error calculation
+
+The code is run from the stock_plots file, but the API credentials and selected stocks need to be set in the stock_connect file. 
+P
 
 Place person Binance info below:
 ```
@@ -16,12 +25,14 @@ api_key = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 api_secret = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 ```
 
-Choose which stocks you want to monitor for trade activity
+Choose which stocks you want to monitor for trade activity. Place this into the stock_connect file.
 ```
 tickerlist = ['bnbeth@ticker', 'neoeth@ticker','bateth@ticker', 'xlmeth@ticker','zrpeth@ticker',
               'zrxeth@ticker', 'adaeth@ticker','kmdeth@ticker', 'naveth@ticker','enjeth@ticker',
               'knceth@ticker', 'rlceth@ticker','rcneth@ticker', 'evxeth@ticker','icxeth@ticker']
 ```
+
+Once stock_connect has all the parameters, run the stock_plots function.
 ### Going From Simulation to Actual Selling
 
 The Jesus int controlls whether the script sends the sell command to the API. Set to zero for simulation. Set to 1 for active trading.
