@@ -12,8 +12,11 @@ Download the zip and open Stock_Regress.py in your prefered IDE. Make sure to ha
 
 The program is divided into 4 scripts:
 stock_connect: connects to RestAPI web socket and stores stock data
+
 stock_plots: generates the ggplot graphs and UI interface to change stocks
+
 stock_trade: contains the buying and selling scripts
+
 stock_reg: performs the regression and error calculation
 
 The code is run from the stock_plots file, but the API credentials and selected stocks need to be set in the stock_connect file. 
